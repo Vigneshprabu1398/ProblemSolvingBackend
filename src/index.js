@@ -10,6 +10,9 @@ const port = PORT || API_PORT || 3000;
 
 app.use(express.json());
 
+const cors = require("cors");
+app.use(cors());
+
 // Custom logging middleware
 app.use(async (req, res, next) => {
     console.log('Incoming Request:', { path: req.path });

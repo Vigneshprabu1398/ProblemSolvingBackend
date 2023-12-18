@@ -22,38 +22,13 @@ router.post("/strongPassword", function (req, res) {
   
 });
 
-router.post("/fetch-StrongPassword", function (req, res) {
-  const pageNo = parseInt(req.query.pageNo);
-  const offSet = parseInt(req.query.offSet);
-  const status = req.query.status;
-  const query = {};
-  if (status != "ALL") {
-    query["status"] = status
-  }
-
-  db.collection("BlockUpi").countDocuments(query, (err, totalElements) => {
-    if (err) throw err;
-    const totalPages = Math.ceil(totalElements / offSet);
-    const options = {
-      skip: (pageNo) * offSet,
-      limit: offSet,
-    };
-
-    db.collection("BlockUpi").find(query, options).toArray((err, data) => {
+router.get("/fetch-StrongPassword", function (req, res) {
+    db.collection("StrongPassword").find().toArray((err, data) => {
       if (err) throw err;
       return res.json({
-        result: {
-          data,
-          pagination: {
-            pageNo,
-            offSet,
-            totalElements,
-            totalPages,
-          }
-        }
+        result: { data }
       });
     });
-  });
 });
 
 module.exports = router;
